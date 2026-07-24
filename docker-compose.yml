@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  policycenter-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: policycenter-sandbox
+    ports:
+      - "9090:8080"
+    restart: unless-stopped
+    environment:
+      - PORT=8080

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guidewire PolicyCenter™ (P&C Core System)</title>
+    <link rel="stylesheet" href="css/guidewire-theme.css">
+</head>
+<body>
+
+    <!-- Guidewire PolicyCenter Login Gateway Modal -->
+    <div class="gw-login-overlay" id="login-modal">
+        <div class="gw-login-card">
+            <div class="gw-login-header">
+                <div class="gw-brand-logo" style="margin: 0 auto; width: 40px; height: 40px; font-size: 20px;">G</div>
+                <h2>PolicyCenter™</h2>
+                <p>Enterprise Guidewire Directory Login</p>
+            </div>
+
+            <div class="gw-login-body">
+                <div class="gw-preset-chips">
+                    <span style="width: 100%; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">DEMO CREDENTIALS:</span>
+                    <button class="gw-chip" onclick="fillCredentials('su', 'gw')">🔑 su / gw (Super User)</button>
+                    <button class="gw-chip" onclick="fillCredentials('underwriter', 'password123')">🔑 underwriter (UW)</button>
+                    <button class="gw-chip" onclick="fillCredentials('producer', 'password123')">🔑 producer (Agent)</button>
+                </div>
+
+                <div class="gw-login-error" id="login-error-msg">Invalid Username or Password</div>
+
+                <form onsubmit="handleLoginSubmit(event)">
+                    <div style="margin-bottom: 14px;">
+                        <label style="font-size:11px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">USER ID / USERNAME</label>
+                        <input type="text" id="login-username" placeholder="su" style="width:100%; padding:8px 12px; border:1px solid #CBD5E1; border-radius:4px;" required>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="font-size:11px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">PASSWORD</label>
+                        <input type="password" id="login-password" placeholder="gw" style="width:100%; padding:8px 12px; border:1px solid #CBD5E1; border-radius:4px;" required>
+                    </div>
+
+                    <button type="submit" class="gw-btn gw-btn-primary" style="width: 100%; padding: 10px; font-size: 13px;">Log In to PolicyCenter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guidewire PolicyCenter Top Navigation Header -->
+    <header class="gw-header">
+        <div class="gw-brand">
+            <div class="gw-brand-logo">G</div>
+            <span>PolicyCenter™</span>
+        </div>
+
+        <nav class="gw-nav-tabs">
+            <div class="gw-tab active" id="tab-desktop" onclick="switchMainTab('desktop')">Desktop ▾</div>
+            <div class="gw-tab" id="tab-accounts" onclick="switchMainTab('accounts')">Account ▾</div>
+            <div class="gw-tab" id="tab-policies" onclick="switchMainTab('policies')">Policy ▾</div>
+            <div class="gw-tab" id="tab-ai-uw" onclick="switchMainTab('ai-uw')">🤖 AI UW Assistant</div>
+            <div class="gw-tab" id="tab-product-studio" onclick="switchMainTab('product-studio')">⚡ Product Studio</div>
+            <div class="gw-tab" id="tab-gosu" onclick="switchMainTab('gosu')">💻 Gosu Rules</div>
+            <div class="gw-tab" id="tab-gis" onclick="switchMainTab('gis')">🗺️ GIS Risk Map</div>
+            <div class="gw-tab" id="tab-billing" onclick="switchMainTab('billing')">💳 Billing & Claims</div>
+            <div class="gw-tab" id="tab-broker-portal" onclick="switchMainTab('broker-portal')">🌐 Broker Portal</div>
+            <div class="gw-tab" id="tab-acord" onclick="switchMainTab('acord')">📄 ACORD Docs</div>
+            <div class="gw-tab" id="tab-activities" onclick="switchMainTab('activities')">📋 Tasks & Notes</div>
+            <div class="gw-tab" id="tab-analytics" onclick="switchMainTab('analytics')">📈 UW Analytics</div>
+            <div class="gw-tab" id="tab-irpm" onclick="switchMainTab('irpm')">⚡ IRPM Rating</div>
+            <div class="gw-tab" id="tab-entities" onclick="switchMainTab('entities')">Entity Explorer</div>
+            <div class="gw-tab" id="tab-batch" onclick="switchMainTab('batch')">⚙️ Batch Processor</div>
+        </nav>
+
+        <div class="gw-header-right">
+            <div class="gw-search-box">
+                <input type="text" placeholder="Go to (Alt+/)" onkeydown="handleQuickSearch(event)">
+                <span style="font-size:11px; color:#94A3B8; cursor:pointer;">🔍</span>
+            </div>
+            <div id="user-header-info" style="font-size:12px; color:#CBD5E1;">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Sub-Header Banner (Contextual Info Bar matching Guidewire Banner) -->
+    <div class="gw-subheader-banner" id="subheader-banner" style="display:none;">
+        <!-- Dynamically rendered by screen modules -->
+    </div>
+
+    <!-- App Main Container -->
+    <div class="gw-container">
+
+        <!-- Left Sidebar Navigation -->
+        <aside class="gw-sidebar" id="sidebar-panel">
+            <!-- Dynamically populated by JS module -->
+        </aside>
+
+        <!-- Main Work Area -->
+        <main class="gw-main">
+
+            <!-- Action Toolbar Header -->
+            <div class="gw-action-bar" id="action-bar-panel">
+                <h1 id="page-heading">My Summary</h1>
+                <div class="gw-btn-group" id="action-buttons">
+                    <button class="gw-btn" onclick="openNewSubmissionModal()">+ New Submission</button>
+                    <button class="gw-btn gw-btn-primary" onclick="openNewAccountModal()">+ New Account</button>
+                </div>
+            </div>
+
+            <!-- Dynamic Scrollable Work Area -->
+            <div class="gw-work-area" id="work-area">
+                <!-- Screen Content Rendered Here via JS -->
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Policy Transactions & Wizards -->
+    <script src="js/wizards/PolicyChangeScreen.js"></script>
+    <script src="js/wizards/RenewalScreen.js"></script>
+    <script src="js/wizards/CancellationScreen.js"></script>
+    <script src="js/wizards/ReinstatementScreen.js"></script>
+    <script src="js/wizards/PolicyTransactionsWizard.js"></script>
+
+    <!-- JavaScript Screen Components -->
+    <script src="js/DesktopScreen.js"></script>
+    <script src="js/AccountScreen.js"></script>
+    <script src="js/SubmissionWizardScreen.js"></script>
+    <script src="js/NewAccountScreen.js"></script>
+    <script src="js/NewSubmissionScreen.js"></script>
+
+    <!-- Advanced Feature Modules -->
+    <script src="js/AIRiskAssistantWidget.js"></script>
+    <script src="js/ProductDesignerScreen.js"></script>
+    <script src="js/GosuRuleStudioScreen.js"></script>
+    <script src="js/GISRiskMapScreen.js"></script>
+    <script src="js/BillingCenterScreen.js"></script>
+    <script src="js/ClaimsScreen.js"></script>
+    <script src="js/ProducerPortalScreen.js"></script>
+    <script src="js/PolicyholderPortalScreen.js"></script>
+
+    <!-- Phase 2 Feature Suite -->
+    <script src="js/ACORDDocumentScreen.js"></script>
+    <script src="js/GuidewireAIChatWidget.js"></script>
+    <script src="js/ActivityTaskScreen.js"></script>
+    <script src="js/PortfolioAnalyticsScreen.js"></script>
+    <script src="js/IRPMScreen.js"></script>
+
+    <script src="js/RatingStudioScreen.js"></script>
+    <script src="js/ReinsuranceScreen.js"></script>
+    <script src="js/EntityExplorerScreen.js"></script>
+    <script src="js/BatchSchedulerScreen.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>

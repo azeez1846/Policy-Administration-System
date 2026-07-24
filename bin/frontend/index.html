@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guidewire PolicyCenter (P&C Core System)</title>
+    <link rel="stylesheet" href="css/guidewire-theme.css">
+</head>
+<body>
+
+    <!-- Guidewire PolicyCenter Login Gateway Modal -->
+    <div class="gw-login-overlay" id="login-modal">
+        <div class="gw-login-card">
+            <div class="gw-login-header">
+                <div class="gw-brand-logo" style="margin: 0 auto; width: 44px; height: 44px; font-size: 22px;">PC</div>
+                <h2>Guidewire PolicyCenter</h2>
+                <p>Enterprise LDAP & System Directory Login</p>
+            </div>
+
+            <div class="gw-login-body">
+                <div class="gw-preset-chips">
+                    <span style="width: 100%; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">DEMO CREDENTIALS:</span>
+                    <button class="gw-chip" onclick="fillCredentials('su', 'gw')">🔑 su / gw (Super User)</button>
+                    <button class="gw-chip" onclick="fillCredentials('underwriter', 'password123')">🔑 underwriter (UW)</button>
+                    <button class="gw-chip" onclick="fillCredentials('producer', 'password123')">🔑 producer (Agent)</button>
+                    <button class="gw-chip" onclick="fillCredentials('admin', 'admin')">🔑 admin (Admin)</button>
+                </div>
+
+                <div class="gw-login-error" id="login-error-msg">Invalid Username or Password</div>
+
+                <form onsubmit="handleLoginSubmit(event)">
+                    <div class="gw-field" style="margin-bottom: 16px;">
+                        <label>User ID / Username</label>
+                        <input type="text" id="login-username" placeholder="Enter username (e.g. su)" required>
+                    </div>
+
+                    <div class="gw-field" style="margin-bottom: 24px;">
+                        <label>Password</label>
+                        <input type="password" id="login-password" placeholder="Enter password (e.g. gw)" required>
+                    </div>
+
+                    <button type="submit" class="gw-btn gw-btn-primary" style="width: 100%; padding: 12px; font-size: 14px;">Log In to PolicyCenter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guidewire PolicyCenter Header -->
+    <header class="gw-header">
+        <div class="gw-brand">
+            <div class="gw-brand-logo">PC</div>
+            <span>Guidewire PolicyCenter</span>
+        </div>
+
+        <nav class="gw-nav-tabs">
+            <div class="gw-tab" id="tab-desktop" onclick="switchMainTab('desktop')">Desktop</div>
+            <div class="gw-tab" id="tab-accounts" onclick="switchMainTab('accounts')">Accounts</div>
+            <div class="gw-tab" id="tab-policies" onclick="switchMainTab('policies')">Policies</div>
+            <div class="gw-tab" id="tab-rating" onclick="switchMainTab('rating')">Rating Studio</div>
+            <div class="gw-tab" id="tab-reinsurance" onclick="switchMainTab('reinsurance')">Reinsurance</div>
+            <div class="gw-tab" id="tab-entities" onclick="switchMainTab('entities')">Entity Explorer</div>
+            <div class="gw-tab" id="tab-admin" onclick="switchMainTab('admin')">Admin</div>
+        </nav>
+
+        <div class="gw-user-section" id="user-header-info">
+            <!-- Rendered by JS -->
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <div class="gw-container">
+
+        <!-- Left Sidebar Wizard Navigation Steps -->
+        <aside class="gw-sidebar" id="sidebar-panel">
+            <div class="gw-sidebar-header" id="sidebar-title">Submission Wizard</div>
+            <ul class="gw-wizard-steps" id="wizard-steps-list">
+                <li class="gw-step-item active" id="step-1" onclick="navigateToStep(1)">
+                    <div class="gw-step-num">1</div>
+                    <span>Policy Info</span>
+                </li>
+                <li class="gw-step-item" id="step-2" onclick="navigateToStep(2)">
+                    <div class="gw-step-num">2</div>
+                    <span>Locations & Buildings</span>
+                </li>
+                <li class="gw-step-item" id="step-3" onclick="navigateToStep(3)">
+                    <div class="gw-step-num">3</div>
+                    <span>Coverages & Terms</span>
+                </li>
+                <li class="gw-step-item" id="step-4" onclick="navigateToStep(4)">
+                    <div class="gw-step-num">4</div>
+                    <span>Risk Analysis & Rules</span>
+                </li>
+                <li class="gw-step-item" id="step-5" onclick="navigateToStep(5)">
+                    <div class="gw-step-num">5</div>
+                    <span>Quote & Rating Sheet</span>
+                </li>
+                <li class="gw-step-item" id="step-6" onclick="navigateToStep(6)">
+                    <div class="gw-step-num">6</div>
+                    <span>Forms & Issue</span>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Work Area -->
+        <main class="gw-main">
+
+            <!-- Action Toolbar Banner -->
+            <div class="gw-action-bar">
+                <div class="gw-action-title">
+                    <h1 id="page-heading">Submission (SUB-5001) - Commercial Property</h1>
+                    <span class="gw-badge gw-badge-draft" id="job-status-badge">DRAFT</span>
+                </div>
+
+                <div class="gw-btn-group" id="action-buttons">
+                    <button class="gw-btn" onclick="saveDraft()">Save Draft</button>
+                    <button class="gw-btn gw-btn-primary" id="btn-quote" onclick="requestQuote()">Request Quote</button>
+                    <button class="gw-btn gw-btn-success" id="btn-bind" style="display:none;" onclick="bindAndIssue()">Bind & Issue Policy</button>
+                </div>
+            </div>
+
+            <!-- Scrollable Dynamic Work Area -->
+            <div class="gw-work-area" id="work-area">
+                <!-- Dynamic Content Rendered Here via JS -->
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JavaScript Application -->
+    <script src="js/NewAccountScreen.js"></script>
+    <script src="js/NewSubmissionScreen.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/wizards/SubmissionWizard.js"></script>
+    <script src="js/wizards/PolicyTransactionsWizard.js"></script>
+    <script src="js/wizards/PolicyChangeScreen.js"></script>
+    <script src="js/wizards/RenewalScreen.js"></script>
+    <script src="js/wizards/CancellationScreen.js"></script>
+    <script src="js/wizards/ReinstatementScreen.js"></script>
+    <script src="js/wizards/RiskAnalysisScreen.js"></script>
+    <script src="js/wizards/AutoLineScreen.js"></script>
+    <script src="js/wizards/FormsScreen.js"></script>
+    <script src="js/wizards/BillingScreen.js"></script>
+    <script src="js/wizards/ClaimsScreen.js"></script>
+    <script src="js/RatingStudioScreen.js"></script>
+    <script src="js/ReinsuranceScreen.js"></script>
+    <script src="js/PolicyHistoryScreen.js"></script>
+    <script src="js/BatchSchedulerScreen.js"></script>
+    <script src="js/EntityExplorerScreen.js"></script>
+
+</body>
+</html>

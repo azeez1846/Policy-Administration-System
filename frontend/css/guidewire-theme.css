@@ -1,0 +1,542 @@
+/* Guidewire PolicyCenter Authentic Theme */
+:root {
+    --gw-header-bg: #142232;
+    --gw-header-accent: #2563EB;
+    --gw-sidebar-bg: #1A2837;
+    --gw-sidebar-text: #E2E8F0;
+    --gw-sidebar-hover: #26384C;
+    --gw-sidebar-active: #0F172A;
+    --gw-banner-bg: #E8EEF5;
+    --gw-actionbar-bg: #F1F5F9;
+    --gw-border: #CBD5E1;
+    --gw-table-header-bg: #F8FAFC;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: #F8FAFC;
+    color: #1E293B;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-size: 13px;
+}
+
+/* Header Bar */
+.gw-header {
+    background-color: var(--gw-header-bg);
+    color: #FFFFFF;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-bottom: 2px solid #3B82F6;
+    flex-shrink: 0;
+}
+
+.gw-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+.gw-brand-logo {
+    background: #2563EB;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+}
+
+.gw-nav-tabs {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.gw-tab {
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    height: 100%;
+    color: #CBD5E1;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+}
+
+.gw-tab:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.gw-tab.active {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.12);
+    border-bottom-color: #60A5FA;
+}
+
+.gw-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.gw-search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 3px 8px;
+}
+
+.gw-search-box input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 12px;
+    outline: none;
+    width: 140px;
+}
+
+.gw-search-box input::placeholder {
+    color: #94A3B8;
+}
+
+/* Sub-Header Banner (Contextual Info Banner) */
+.gw-subheader-banner {
+    background-color: var(--gw-banner-bg);
+    border-bottom: 1px solid #CBD5E1;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.gw-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.gw-banner-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.gw-banner-item strong {
+    color: #0F172A;
+}
+
+/* Main Layout Grid */
+.gw-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Left Sidebar Accordion / Wizard Steps */
+.gw-sidebar {
+    width: 250px;
+    background-color: var(--gw-sidebar-bg);
+    border-right: 1px solid #0F172A;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    color: var(--gw-sidebar-text);
+}
+
+.gw-sidebar-title {
+    padding: 12px 16px;
+    background: #0F172A;
+    font-weight: 700;
+    font-size: 13px;
+    color: #F8FAFC;
+    border-bottom: 1px solid #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gw-sidebar-accordion {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.gw-accordion-section {
+    border-bottom: 1px solid #26384C;
+}
+
+.gw-accordion-header {
+    padding: 10px 14px;
+    font-weight: 700;
+    font-size: 12px;
+    color: #94A3B8;
+    background: #142232;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+.gw-accordion-header:hover {
+    color: #FFFFFF;
+}
+
+.gw-tree-list {
+    list-style: none;
+    padding: 0;
+}
+
+.gw-tree-item {
+    padding: 8px 16px 8px 24px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #CBD5E1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.1s;
+}
+
+.gw-tree-item:hover {
+    background: var(--gw-sidebar-hover);
+    color: #FFFFFF;
+}
+
+.gw-tree-item.active {
+    background: #2563EB;
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+.gw-tree-subitem {
+    padding: 6px 16px 6px 36px;
+    font-size: 12px;
+    color: #94A3B8;
+    cursor: pointer;
+}
+
+.gw-tree-subitem:hover {
+    color: #FFFFFF;
+    background: var(--gw-sidebar-hover);
+}
+
+.gw-tree-subitem.active {
+    color: #60A5FA;
+    font-weight: 700;
+    background: rgba(37, 99, 235, 0.2);
+}
+
+/* Main Content Work Area */
+.gw-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #FFFFFF;
+}
+
+/* Action Toolbar Header */
+.gw-action-bar {
+    background-color: var(--gw-actionbar-bg);
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--gw-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.gw-action-bar h1 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0F172A;
+}
+
+.gw-btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.gw-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #CBD5E1;
+    background-color: #FFFFFF;
+    color: #334155;
+    transition: all 0.15s;
+}
+
+.gw-btn:hover {
+    background-color: #F1F5F9;
+    border-color: #94A3B8;
+}
+
+.gw-btn-primary {
+    background-color: #2563EB;
+    color: white;
+    border-color: #2563EB;
+}
+
+.gw-btn-primary:hover {
+    background-color: #1D4ED8;
+}
+
+.gw-btn-success {
+    background-color: #16A34A;
+    color: white;
+    border-color: #16A34A;
+}
+
+/* Scrollable Work Area */
+.gw-work-area {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #F8FAFC;
+}
+
+/* Card & Panels */
+.gw-panel {
+    background: #FFFFFF;
+    border: 1px solid var(--gw-border);
+    border-radius: 6px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.gw-panel-header {
+    padding: 10px 16px;
+    background-color: #F1F5F9;
+    border-bottom: 1px solid var(--gw-border);
+    font-weight: 700;
+    font-size: 13px;
+    color: #1E293B;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.gw-panel-body {
+    padding: 16px;
+}
+
+/* Stat Cards Box (Desktop Overview) */
+.gw-stat-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.gw-stat-card {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    padding: 14px;
+    text-align: center;
+}
+
+.gw-stat-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0F172A;
+}
+
+.gw-stat-label {
+    font-size: 12px;
+    color: #64748B;
+    margin: 2px 0 6px 0;
+}
+
+.gw-overdue-badge {
+    background: #FEE2E2;
+    color: #991B1B;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* Data Tables */
+.gw-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.gw-table th {
+    background-color: #F1F5F9;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 700;
+    color: #475569;
+    border-bottom: 2px solid var(--gw-border);
+}
+
+.gw-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #1E293B;
+}
+
+.gw-table tr:hover {
+    background-color: #F8FAFC;
+}
+
+/* Key Value Summary Grids */
+.gw-kv-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 24px;
+}
+
+.gw-kv-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed #E2E8F0;
+}
+
+.gw-kv-item span:first-child {
+    color: #64748B;
+    font-weight: 600;
+}
+
+.gw-kv-item span:last-child {
+    color: #0F172A;
+    font-weight: 700;
+}
+
+/* Tab Strip */
+.gw-tab-strip {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid #CBD5E1;
+    margin-bottom: 16px;
+}
+
+.gw-tab-item {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748B;
+    background: #E2E8F0;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+}
+
+.gw-tab-item.active {
+    background: #FFFFFF;
+    color: #2563EB;
+    border: 1px solid #CBD5E1;
+    border-bottom: 2px solid #FFFFFF;
+    margin-bottom: -2px;
+    font-weight: 700;
+}
+
+/* Authentication Login Modal */
+.gw-login-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top right, #1E293B 0%, #0F172A 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+.gw-login-card {
+    background: #FFFFFF;
+    width: 420px;
+    border-radius: 8px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    border: 1px solid var(--gw-border);
+}
+
+.gw-login-header {
+    background-color: var(--gw-header-bg);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 3px solid #2563EB;
+}
+
+.gw-login-header h2 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-top: 6px;
+}
+
+.gw-login-body {
+    padding: 24px;
+}
+
+.gw-preset-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.gw-chip {
+    background: #F1F5F9;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #334155;
+    cursor: pointer;
+}
+
+.gw-chip:hover {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.gw-login-error {
+    background: #FEE2E2;
+    color: #991B1B;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 12px;
+    display: none;
+}
