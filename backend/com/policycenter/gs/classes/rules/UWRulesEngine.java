@@ -99,6 +99,7 @@ public class UWRulesEngine {
                     );
                     issue.setLongDescription("HazardHub Intelligence score indicates extreme wildfire vulnerability zone. Senior UW sign-off required.");
                     issues.add(issue);
+                    period.addUwIssue(issue);
                 }
                 if (hi.getFloodZone() != null && (hi.getFloodZone().contains("VE") || hi.getFloodZone().contains("AE"))) {
                     UWIssue issue = new UWIssue(
@@ -109,6 +110,7 @@ public class UWRulesEngine {
                     );
                     issue.setLongDescription("High-risk FEMA flood zone classification requires mandatory flood deductible endorsement and UW review.");
                     issues.add(issue);
+                    period.addUwIssue(issue);
                 }
             }
         }
