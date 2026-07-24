@@ -13,7 +13,7 @@ import java.util.*;
 public class PolicyCenterSqliteRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PolicyCenterSqliteRepository.class);
-    private static final String DB_URL = "jdbc:sqlite:" + getDatabaseFilePath();
+    private static final String DB_URL = "jdbc:sqlite:" + getDatabaseFilePath() + "?journal_mode=WAL&synchronous=NORMAL&busy_timeout=5000";
 
     private static String getDatabaseFilePath() {
         return new java.io.File("policycenter.db").getAbsolutePath();
@@ -996,7 +996,7 @@ public class PolicyCenterSqliteRepository {
     public List<Account> getAllAccounts() {
         List<Account> result = new ArrayList<>();
         List<String> accountNumbers = new ArrayList<>();
-        String sql = "SELECT account_number FROM accounts";
+        String sql = "SELECT account_number FROM accounts ORDER BY rowid DESC LIMIT 50";
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 accountNumbers.add(rs.getString("account_number"));
@@ -1276,7 +1276,7 @@ public class PolicyCenterSqliteRepository {
     public List<PolicyPeriod> getAllPolicies() {
         List<PolicyPeriod> list = new ArrayList<>();
         List<String> periodIds = new ArrayList<>();
-        String sql = "SELECT period_id FROM policy_periods";
+        String sql = "SELECT period_id FROM policy_periods ORDER BY rowid DESC LIMIT 50";
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 periodIds.add(rs.getString("period_id"));
@@ -1379,7 +1379,7 @@ public class PolicyCenterSqliteRepository {
     public List<Job> getAllJobs() {
         List<Job> result = new ArrayList<>();
         List<String> jobNumbers = new ArrayList<>();
-        String sql = "SELECT job_number FROM jobs";
+        String sql = "SELECT job_number FROM jobs ORDER BY rowid DESC LIMIT 50";
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 jobNumbers.add(rs.getString("job_number"));
@@ -1718,7 +1718,7 @@ public class PolicyCenterSqliteRepository {
 
     public List<HazardIntelligence> getAllHazardIntelligence() {
         List<HazardIntelligence> list = new ArrayList<>();
-        String sql = "SELECT * FROM hazard_intelligence ORDER BY wildfire_score DESC";
+        String sql = "SELECT * FROM hazard_intelligence ORDER BY wildfire_score DESC LIMIT 50";
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 HazardIntelligence hi = new HazardIntelligence(
@@ -1783,7 +1783,7 @@ public class PolicyCenterSqliteRepository {
 
     public List<ESignatureEnvelope> getAllESignatureEnvelopes() {
         List<ESignatureEnvelope> list = new ArrayList<>();
-        String sql = "SELECT * FROM esignature_envelopes ORDER BY sent_at DESC";
+        String sql = "SELECT * FROM esignature_envelopes ORDER BY sent_at DESC LIMIT 50";
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 ESignatureEnvelope env = new ESignatureEnvelope(
