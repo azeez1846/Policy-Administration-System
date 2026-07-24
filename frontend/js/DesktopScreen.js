@@ -69,13 +69,20 @@ async function renderMySummaryScreen(container) {
     container.innerHTML = `<div style="padding:20px; color:#64748B;">Loading Summary metrics from Database...</div>`;
 
     try {
-        const [jobsRes, accsRes] = await Promise.all([
-            fetch(`${API_BASE}/jobs`),
-            fetch(`${API_BASE}/accounts`)
-        ]);
-
-        const jobs = jobsRes.ok ? await jobsRes.json() : [];
-        const accounts = accsRes.ok ? await accsRes.json() : [];
+        let jobs = [];
+        let accounts = [];
+        try {
+            const jobsRes = await fetch(`${API_BASE}/jobs`);
+            if (jobsRes.ok) jobs = await jobsRes.json();
+        } catch (e) {
+            console.warn('Jobs fetch warning:', e);
+        }
+        try {
+            const accsRes = await fetch(`${API_BASE}/accounts`);
+            if (accsRes.ok) accounts = await accsRes.json();
+        } catch (e) {
+            console.warn('Accounts fetch warning:', e);
+        }
 
         const totalSubmissions = jobs.filter(j => j.jobType === 'Submission' || !j.jobType).length;
         const totalRenewals = jobs.filter(j => j.jobType === 'Renewal').length;
