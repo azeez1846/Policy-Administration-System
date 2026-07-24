@@ -995,14 +995,18 @@ public class PolicyCenterSqliteRepository {
 
     public List<Account> getAllAccounts() {
         List<Account> result = new ArrayList<>();
+        List<String> accountNumbers = new ArrayList<>();
         String sql = "SELECT account_number FROM accounts";
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                Account a = getAccount(rs.getString("account_number"));
-                if (a != null) result.add(a);
+                accountNumbers.add(rs.getString("account_number"));
             }
         } catch (SQLException e) {
             LOGGER.error("Error fetching all accounts", e);
+        }
+        for (String accNum : accountNumbers) {
+            Account a = getAccount(accNum);
+            if (a != null) result.add(a);
         }
         return result;
     }
@@ -1271,14 +1275,18 @@ public class PolicyCenterSqliteRepository {
 
     public List<PolicyPeriod> getAllPolicies() {
         List<PolicyPeriod> list = new ArrayList<>();
+        List<String> periodIds = new ArrayList<>();
         String sql = "SELECT period_id FROM policy_periods";
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                PolicyPeriod p = getPolicyPeriod(rs.getString("period_id"));
-                if (p != null) list.add(p);
+                periodIds.add(rs.getString("period_id"));
             }
         } catch (SQLException e) {
             LOGGER.error("Error fetching all policies", e);
+        }
+        for (String pid : periodIds) {
+            PolicyPeriod p = getPolicyPeriod(pid);
+            if (p != null) list.add(p);
         }
         return list;
     }
@@ -1370,14 +1378,18 @@ public class PolicyCenterSqliteRepository {
 
     public List<Job> getAllJobs() {
         List<Job> result = new ArrayList<>();
+        List<String> jobNumbers = new ArrayList<>();
         String sql = "SELECT job_number FROM jobs";
         try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                Job j = getJob(rs.getString("job_number"));
-                if (j != null) result.add(j);
+                jobNumbers.add(rs.getString("job_number"));
             }
         } catch (SQLException e) {
             LOGGER.error("Error fetching all jobs", e);
+        }
+        for (String jobNum : jobNumbers) {
+            Job j = getJob(jobNum);
+            if (j != null) result.add(j);
         }
         return result;
     }
