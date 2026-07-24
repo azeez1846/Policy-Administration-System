@@ -108,6 +108,7 @@ function switchMainTab(tab) {
         'analytics': 'tab-analytics',
         'irpm': 'tab-irpm',
         'entities': 'tab-entities',
+        'telematics': 'tab-telematics',
         'batch': 'tab-batch'
     };
 
@@ -169,6 +170,10 @@ function switchMainTab(tab) {
     } else if (tab === 'entities') {
         if (subheaderBanner) subheaderBanner.style.display = 'none';
         renderEntityExplorerScreenWrapper();
+    } else if (tab === 'telematics') {
+        if (subheaderBanner) subheaderBanner.style.display = 'none';
+        if (pageHeading) pageHeading.innerText = '📡 IoT Telematics & Commercial Fleet Live Risk Streamer';
+        if (typeof renderTelematicsScreen === 'function') renderTelematicsScreen(workArea);
     } else if (tab === 'batch') {
         if (subheaderBanner) subheaderBanner.style.display = 'none';
         if (pageHeading) pageHeading.innerText = '⚙️ Guidewire WorkQueue & Batch Process Studio';

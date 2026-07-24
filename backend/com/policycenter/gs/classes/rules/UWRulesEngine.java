@@ -76,8 +76,69 @@ public class UWRulesEngine {
         // Evaluate HazardHub Environmental Risk Rules (Marketplace Accelerator)
         evaluateHazardRules(period, issues);
 
+        // Evaluate Catastrophe Moratorium / PolicyHold Rules
+        evaluateMoratoriumRules(period, issues);
+
         return period.getUwIssues();
     }
+
+    private static void evaluateMoratoriumRules(PolicyPeriod period, List<UWIssue> issues) {
+        if (period == null || period.getLocations() == null) return;
+        com.policycenter.service.CatastropheMoratoriumService moratoriumService = com.policycenter.service.CatastropheMoratoriumService.getInstance();
+
+        for (PolicyLocation loc : period.getLocations()) {
+            double lat = loc.getLatitude();
+            double lng = loc.getLongitude();
+
+            // Fallback to state coordinates if lat/lng are 0
+            if (lat == 0.0 && lng == 0.0) {
+                if (loc.getState() != null && loc.getState().equalsIgnoreCase("FL")) {
+                    lat = 25.7617; lng = -80.1918; // Miami FL default
+                } else if (loc.getState() != null && loc.getState().equalsIgnoreCase("CA")) {
+                    lat = 34.0522; lng = -118.2437; // Los Angeles CA default
+                } else if (loc.getState() != null && loc.getState().equalsIgnoreCase("TX")) {
+                    lat = 29.7604; lng = -95.3698; // Houston TX default
+                } else if (loc.getState() != null && loc.getState().equalsIgnoreCase("IL")) {
+                    lat = 41.8781; lng = -87.6298; // Chicago IL default
+                } else if (loc.getState() != null && loc.getState().equalsIgnoreCase("NY")) {
+                    lat = 40.7128; lng = -74.0060; // NY default
+                }
+            }
+
+            if (lat != 0.0 && lng != 0.0) {
+                List<com.policycenter.model.CatastropheMoratorium> activeMoratoriums = moratoriumService.findViolatingMoratoriums(lat, lng);
+                for (com.policycenter.model.CatastropheMoratorium m : activeMoratoriums) {
+                    double dist = com.policycenter.service.CatastropheMoratoriumService.calculateDistanceMiles(lat, lng, m.getLat(), m.getLng());
+                    String issueKey = "uwi-moratorium-" + m.getId() + "-" + (loc.getPublicID() != null ? loc.getPublicID() : loc.getLocationNum());
+
+                    boolean exists = false;
+                    for (UWIssue existing : period.getUwIssues()) {
+                        if (existing.getIssueKey().equalsIgnoreCase(issueKey)) {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists) {
+                        String blockLevel = m.isBlocksBind() ? "Bind" : (m.isBlocksQuote() ? "Quote" : "Issue");
+                        UWIssue issue = new UWIssue(
+                            issueKey,
+                            issueKey,
+                            "CATASTROPHE MORATORIUM: Location " + (loc.getLocationName() != null ? loc.getLocationName() : "Loc #" + loc.getLocationNum()) +
+                            " (" + String.format("%.1f", dist) + " mi) is within active moratorium zone '" + m.getName() + "'",
+                            blockLevel
+                        );
+                        issue.setLongDescription("PolicyHold restriction in effect due to active catastrophe event: " + m.getName() +
+                            " (Declared " + m.getEffectiveDate() + " by " + m.getCreatedBy() + "). Policy binding is suspended for properties within " +
+                            m.getRadiusMiles() + " miles.");
+                        issues.add(issue);
+                        period.addUwIssue(issue);
+                    }
+                }
+            }
+        }
+    }
+
 
     private static void evaluateHazardRules(PolicyPeriod period, List<UWIssue> issues) {
         if (period == null || period.getLocations() == null) return;

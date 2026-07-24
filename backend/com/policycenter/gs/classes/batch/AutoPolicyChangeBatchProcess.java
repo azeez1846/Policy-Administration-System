@@ -28,25 +28,24 @@ public class AutoPolicyChangeBatchProcess {
 
         List<Job> boundJobs = new ArrayList<>();
         for (Job j : allJobs) {
-            String status = j.getJobStatus() != null ? j.getJobStatus() : (j.getPolicyPeriod() != null ? j.getPolicyPeriod().getStatus() : "Draft");
-            if ("Bound".equalsIgnoreCase(status) || "Issued".equalsIgnoreCase(status)) {
+            if ("PolicyChange".equalsIgnoreCase(j.getJobType())) {
+                continue; // Do not issue PolicyChange on top of another batch PolicyChange
+            }
+            String jobStatus = j.getJobStatus();
+            String periodStatus = j.getPolicyPeriod() != null ? j.getPolicyPeriod().getStatus() : null;
+            if ("Bound".equalsIgnoreCase(jobStatus) || "Issued".equalsIgnoreCase(jobStatus) ||
+                "Bound".equalsIgnoreCase(periodStatus) || "Issued".equalsIgnoreCase(periodStatus)) {
                 boundJobs.add(j);
             }
         }
 
-        // If no bound jobs exist in DB, create two sample bound policies so batch job always processes work
+        // If no bound primary jobs exist in DB, create sample bound policy
         if (boundJobs.isEmpty()) {
             Job j1 = repository.createSubmissionJob("C00010928", "CommercialProperty");
             j1.setJobStatus("Bound");
             if (j1.getPolicyPeriod() != null) j1.getPolicyPeriod().setStatus("Bound");
             repository.saveJob(j1);
             boundJobs.add(j1);
-
-            Job j2 = repository.createSubmissionJob("C00010928", "CommercialAuto");
-            j2.setJobStatus("Bound");
-            if (j2.getPolicyPeriod() != null) j2.getPolicyPeriod().setStatus("Bound");
-            repository.saveJob(j2);
-            boundJobs.add(j2);
         }
 
         lastExecutionLogs.clear();
@@ -105,6 +104,7 @@ public class AutoPolicyChangeBatchProcess {
                 lastExecutionLogs.add(logEntry);
 
             } catch (Exception e) {
+                lastRunStats.put("lastError", e.getClass().getName() + ": " + e.getMessage());
                 failedCount++;
             }
         }

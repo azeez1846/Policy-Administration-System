@@ -171,7 +171,13 @@ public class PolicyCenterSqliteRepository {
 
             // 10. Buildings table
             stmt.execute("CREATE TABLE IF NOT EXISTS buildings (" +
-                    "public_id TEXT PRIMARY KEY, " +
+                    "id TEXT PRIMARY KEY, " +
+                    "fixed_id TEXT, " +
+                    "branch_id TEXT, " +
+                    "effective_date TEXT, " +
+                    "expiration_date TEXT, " +
+                    "change_type TEXT, " +
+                    "public_id TEXT, " +
                     "period_id TEXT, " +
                     "building_num INTEGER, " +
                     "description TEXT, " +
@@ -1083,20 +1089,29 @@ public class PolicyCenterSqliteRepository {
     }
 
     private void saveBuildingInternal(Connection conn, String periodId, Building b) throws SQLException {
-        String sql = "INSERT OR REPLACE INTO buildings (public_id, period_id, building_num, description, construction_type, year_built, number_of_stories, sprinklered, alarm_type, fire_protection_class, building_limit, contents_limit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        if (b.getBranchID() == null || "BRANCH-DEFAULT".equals(b.getBranchID())) {
+            b.setBranchID(periodId);
+        }
+        String sql = "INSERT OR REPLACE INTO buildings (id, fixed_id, branch_id, effective_date, expiration_date, change_type, public_id, period_id, building_num, description, construction_type, year_built, number_of_stories, sprinklered, alarm_type, fire_protection_class, building_limit, contents_limit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, b.getPublicID());
-            pstmt.setString(2, periodId);
-            pstmt.setInt(3, b.getBuildingNum());
-            pstmt.setString(4, b.getDescription());
-            pstmt.setString(5, b.getConstructionType());
-            pstmt.setInt(6, b.getYearBuilt());
-            pstmt.setInt(7, b.getNumberOfStories());
-            pstmt.setInt(8, b.isSprinklered() ? 1 : 0);
-            pstmt.setString(9, b.getAlarmType());
-            pstmt.setString(10, b.getFireProtectionClass());
-            pstmt.setDouble(11, b.getBuildingLimit());
-            pstmt.setDouble(12, b.getContentsLimit());
+            pstmt.setString(1, b.getId());
+            pstmt.setString(2, b.getFixedID());
+            pstmt.setString(3, b.getBranchID());
+            pstmt.setString(4, b.getEffectiveDate());
+            pstmt.setString(5, b.getExpirationDate());
+            pstmt.setString(6, b.getChangeType());
+            pstmt.setString(7, b.getPublicID());
+            pstmt.setString(8, periodId);
+            pstmt.setInt(9, b.getBuildingNum());
+            pstmt.setString(10, b.getDescription());
+            pstmt.setString(11, b.getConstructionType());
+            pstmt.setInt(12, b.getYearBuilt());
+            pstmt.setInt(13, b.getNumberOfStories());
+            pstmt.setInt(14, b.isSprinklered() ? 1 : 0);
+            pstmt.setString(15, b.getAlarmType());
+            pstmt.setString(16, b.getFireProtectionClass());
+            pstmt.setDouble(17, b.getBuildingLimit());
+            pstmt.setDouble(18, b.getContentsLimit());
             pstmt.executeUpdate();
         }
         for (Coverage c : b.getCoverages()) {
@@ -1214,11 +1229,18 @@ public class PolicyCenterSqliteRepository {
                             ResultSet bRs = bStmt.executeQuery();
                             while (bRs.next()) {
                                 Building b = new Building(bRs.getString("public_id"), bRs.getInt("building_num"), bRs.getString("description"), bRs.getString("construction_type"), bRs.getInt("year_built"), bRs.getDouble("building_limit"), bRs.getDouble("contents_limit"));
+                                if (bRs.getString("id") != null) b.setId(bRs.getString("id"));
+                                if (bRs.getString("fixed_id") != null) b.setFixedID(bRs.getString("fixed_id"));
+                                if (bRs.getString("branch_id") != null) b.setBranchID(bRs.getString("branch_id"));
+                                if (bRs.getString("effective_date") != null) b.setEffectiveDate(bRs.getString("effective_date"));
+                                if (bRs.getString("expiration_date") != null) b.setExpirationDate(bRs.getString("expiration_date"));
+                                if (bRs.getString("change_type") != null) b.setChangeType(bRs.getString("change_type"));
                                 b.setNumberOfStories(bRs.getInt("number_of_stories"));
                                 b.setSprinklered(bRs.getInt("sprinklered") == 1);
                                 b.setAlarmType(bRs.getString("alarm_type"));
                                 b.setFireProtectionClass(bRs.getString("fire_protection_class"));
                                 line.addBuilding(b);
+                                p.getBuildings().add(b);
                             }
                         }
                         p.addLine(line);

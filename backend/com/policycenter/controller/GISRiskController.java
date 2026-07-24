@@ -1,5 +1,8 @@
 package com.policycenter.controller;
 
+import com.policycenter.model.CatastropheMoratorium;
+import com.policycenter.service.CatastropheMoratoriumService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +12,8 @@ import java.util.Map;
 @RequestMapping("/api/gis")
 @CrossOrigin(origins = "*")
 public class GISRiskController {
+
+    private final CatastropheMoratoriumService moratoriumService = CatastropheMoratoriumService.getInstance();
 
     @GetMapping("/exposures")
     public List<Map<String, Object>> getGeospatialExposures() {
@@ -20,4 +25,41 @@ public class GISRiskController {
             Map.of("id", "loc-105", "name", "New York Corporate Office", "lat", 40.7128, "lng", -74.0060, "tiv", 22000000.0, "riskCategory", "Commercial Retail", "state", "NY")
         );
     }
+
+    @GetMapping("/moratoriums")
+    public List<CatastropheMoratorium> getMoratoriums() {
+        return moratoriumService.getAllMoratoriums();
+    }
+
+    @PostMapping("/moratoriums")
+    public CatastropheMoratorium declareMoratorium(@RequestBody CatastropheMoratorium moratorium) {
+        return moratoriumService.addMoratorium(moratorium);
+    }
+
+    @PostMapping("/moratoriums/{id}/lift")
+    public ResponseEntity<Map<String, Object>> liftMoratorium(@PathVariable String id) {
+        boolean success = moratoriumService.liftMoratorium(id);
+        if (success) {
+            return ResponseEntity.ok(Map.of("status", "SUCCESS", "message", "Moratorium " + id + " has been lifted."));
+        } else {
+            return ResponseEntity.badRequest().body(Map.of("status", "ERROR", "message", "Moratorium not found"));
+        }
+    }
+
+    @PostMapping("/moratoriums/check")
+    public ResponseEntity<Map<String, Object>> checkCoordinates(@RequestBody Map<String, Object> req) {
+        double lat = Double.parseDouble(req.getOrDefault("lat", "0").toString());
+        double lng = Double.parseDouble(req.getOrDefault("lng", "0").toString());
+
+        List<CatastropheMoratorium> activeViolations = moratoriumService.findViolatingMoratoriums(lat, lng);
+        boolean blocked = !activeViolations.isEmpty();
+
+        return ResponseEntity.ok(Map.of(
+            "lat", lat,
+            "lng", lng,
+            "isBlocked", blocked,
+            "violatingMoratoriums", activeViolations
+        ));
+    }
 }
+

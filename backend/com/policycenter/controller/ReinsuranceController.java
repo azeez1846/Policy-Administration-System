@@ -17,6 +17,11 @@ public class ReinsuranceController {
         return ReinsuranceEngine.getAllTreaties();
     }
 
+    @PostMapping("/treaties")
+    public ReinsuranceTreaty addTreaty(@RequestBody ReinsuranceTreaty treaty) {
+        return ReinsuranceEngine.addTreaty(treaty);
+    }
+
     @PostMapping("/calculate-cession")
     public Map<String, Object> calculateCession(@RequestBody Map<String, Object> payload) {
         double grossPremium = Double.parseDouble(payload.getOrDefault("grossPremium", "2400.00").toString());

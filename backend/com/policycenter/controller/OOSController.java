@@ -17,6 +17,14 @@ public class OOSController {
         return OOSEngine.getHistoryForPolicy(policyNumber);
     }
 
+    @GetMapping("/diff")
+    public Map<String, Object> comparePolicyVersions(
+            @RequestParam(name = "policyNumber", defaultValue = "POL-88201") String policyNumber,
+            @RequestParam(name = "v1", defaultValue = "1") int v1,
+            @RequestParam(name = "v2", defaultValue = "2") int v2) {
+        return OOSEngine.compareVersions(policyNumber, v1, v2);
+    }
+
     @PostMapping("/oos-endorse")
     public PolicyVersion createOOSEndorsement(@RequestBody Map<String, String> payload) {
         String policyNumber = payload.getOrDefault("policyNumber", "POL-88201");

@@ -14,6 +14,8 @@ public class PolicyLocation {
     private int buildingCount;
     private String fireProtectionClass;
     private String taxLocationCode;
+    private double latitude;
+    private double longitude;
     private List<Building> buildings = new ArrayList<>();
 
     public PolicyLocation() {}
@@ -60,6 +62,12 @@ public class PolicyLocation {
 
     public String getTaxLocationCode() { return taxLocationCode; }
     public void setTaxLocationCode(String taxLocationCode) { this.taxLocationCode = taxLocationCode; }
+
+    public double getLatitude() { return latitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+
+    public double getLongitude() { return longitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
     public List<Building> getBuildings() { return buildings; }
     public void addBuilding(Building building) {

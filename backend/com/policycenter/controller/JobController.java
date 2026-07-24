@@ -1,7 +1,7 @@
 package com.policycenter.controller;
 
 import com.policycenter.gs.classes.job.*;
-import com.policycenter.model.Job;
+import com.policycenter.model.*;
 import com.policycenter.repository.PolicyCenterSqliteRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,6 +83,25 @@ public class JobController {
             return job;
         }
         throw new IllegalArgumentException("Job not found: " + jobNumber);
+    }
+
+    @PostMapping("/renewal-packet")
+    public Map<String, Object> getRenewalPacket(@RequestBody Map<String, String> payload) {
+        String jobNumber = payload.getOrDefault("jobNumber", "JOB-001");
+        Job job = repository.getJob(jobNumber);
+        if (job == null) {
+            List<Job> allJobs = repository.getAllJobs();
+            if (allJobs != null && !allJobs.isEmpty()) {
+                job = allJobs.get(0);
+            }
+        }
+        if (job == null) {
+            Account acc = new Account("acc-r0", "C99001", new Contact("c0", "Sample Insured", "Company", "s@c.com", "555-0100"), "Retail");
+            PolicyPeriod period = new PolicyPeriod("prd-r0", acc, acc.getAccountHolder(), "2025-01-01", "2026-01-01");
+            job = new Job("JOB-001", "Renewal", period);
+        }
+        RenewalProcess process = new RenewalProcess(job);
+        return process.generateRenewalPacket();
     }
 
     @PostMapping("/cancel")

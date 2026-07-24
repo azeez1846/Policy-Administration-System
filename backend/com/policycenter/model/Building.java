@@ -6,11 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "pc_building")
-public class Building {
-
-    @Id
-    @Column(name = "public_id")
-    private String publicID;
+public class Building extends EffDatedEntity {
 
     @Column(name = "building_num")
     private int buildingNum;
@@ -45,10 +41,15 @@ public class Building {
     @Transient
     private List<Coverage> coverages = new ArrayList<>();
 
-    public Building() {}
+    public Building() {
+        super();
+    }
 
     public Building(String publicID, int buildingNum, String description, String constructionType, double buildingLimit, double contentsLimit) {
-        this.publicID = publicID;
+        super();
+        if (publicID != null) {
+            setFixedID(publicID);
+        }
         this.buildingNum = buildingNum;
         this.description = description;
         this.constructionType = constructionType;
@@ -62,7 +63,10 @@ public class Building {
     }
 
     public Building(String publicID, int buildingNum, String description, String constructionType, int yearBuilt, double buildingLimit, double contentsLimit) {
-        this.publicID = publicID;
+        super();
+        if (publicID != null) {
+            setFixedID(publicID);
+        }
         this.buildingNum = buildingNum;
         this.description = description;
         this.constructionType = constructionType;
@@ -75,8 +79,8 @@ public class Building {
         this.fireProtectionClass = "Class 3";
     }
 
-    public String getPublicID() { return publicID; }
-    public void setPublicID(String publicID) { this.publicID = publicID; }
+    public String getPublicID() { return getFixedID(); }
+    public void setPublicID(String publicID) { setFixedID(publicID); }
 
     public int getBuildingNum() { return buildingNum; }
     public void setBuildingNum(int buildingNum) { this.buildingNum = buildingNum; }
