@@ -60,10 +60,18 @@ All features created so far are organized into dedicated subfolders under **`fea
 │   ├── PortfolioAnalyticsScreen.js
 │   ├── PortfolioAnalyticsControllerTest.java
 │   └── README.md
-└── 10_schedule_rating_irpm_studio/
-    ├── IRPMController.java
-    ├── IRPMScreen.js
-    ├── IRPMControllerTest.java
+├── 10_schedule_rating_irpm_studio/
+│   ├── IRPMController.java
+│   ├── IRPMScreen.js
+│   ├── IRPMControllerTest.java
+│   └── README.md
+├── 11_hazardhub_property_environmental_risk/
+│   ├── HazardIntelligenceController.java
+│   ├── HazardIntelligence.java
+│   └── README.md
+└── 12_docusign_esignature_integration/
+    ├── ESignatureController.java
+    ├── ESignatureEnvelope.java
     └── README.md
 ```
 
